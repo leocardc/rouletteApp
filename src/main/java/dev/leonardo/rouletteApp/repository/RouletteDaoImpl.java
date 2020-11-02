@@ -32,16 +32,16 @@ public class RouletteDaoImpl implements RouletteDao {
             redisTemplate.opsForHash().put(KEY, rouletteGame.getIdRoulette().toString(),rouletteGame);
             return true;
         }catch (Exception e){
-            e.printStackTrace(); 
+            e.printStackTrace();
             return false;
         }
     }
-
     @Override
     public List<RouletteGame> fetchAllUser() {
         List<RouletteGame> rouletteGames;
         rouletteGames = redisTemplate.opsForHash().values(KEY);
         return rouletteGames;
     }
+
 
 }
