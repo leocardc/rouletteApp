@@ -5,6 +5,8 @@ import dev.leonardo.rouletteApp.repository.RouletteDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RouletteServiceImpl implements RouletteService {
 
@@ -15,4 +17,16 @@ public class RouletteServiceImpl implements RouletteService {
     public Long saveRoulette(RouletteGame rouletteGame) {
         return rouletteDao.saveRoulette(rouletteGame);
     }
+
+    @Override
+    public boolean updateRoulette(RouletteGame rouletteGame) {
+        return rouletteDao.updateRoulette(rouletteGame);
+    }
+
+    @Override
+    public List<RouletteGame> fetchAllUser() {
+        return rouletteDao.fetchAllUser();
+    }
+
+
 }
