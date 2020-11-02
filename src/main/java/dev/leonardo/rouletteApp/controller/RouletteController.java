@@ -1,6 +1,9 @@
 package dev.leonardo.rouletteApp.controller;
 
+import dev.leonardo.rouletteApp.model.BetValidator;
+import dev.leonardo.rouletteApp.model.RouletteBet;
 import dev.leonardo.rouletteApp.model.RouletteGame;
+import dev.leonardo.rouletteApp.service.RouletteBettingService;
 import dev.leonardo.rouletteApp.service.RouletteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,8 @@ public class RouletteController {
 
     @Autowired
     private RouletteService rouletteService;
+    @Autowired
+    private RouletteBettingService  bettingService;
 
     @PostMapping("/createRoulette")
     public ResponseEntity<String> saveRoulette(@RequestBody RouletteGame rouletteGame){
@@ -34,8 +39,27 @@ public class RouletteController {
     @GetMapping("/roulettes")
     public ResponseEntity<List<RouletteGame>> fetchAllUser(){
         List<RouletteGame> rouletteGames;
-        rouletteGames = rouletteService.fetchAllUser();
+        rouletteGames = rouletteService.fetchAllGame();
         return ResponseEntity.ok(rouletteGames);
     }
+    @GetMapping("/roulette/{id}")
+    public ResponseEntity<RouletteGame> fetchGameById(@PathVariable("id") Long id){
+        RouletteGame rouletteGame;
+        rouletteGame = rouletteService.fetchGameById(id);
+        return ResponseEntity.ok(rouletteGame);
+    }
 
+    @PostMapping("/bet/{id}")
+    public ResponseEntity<String> PlaceBets(@PathVariable("id") Long id,@RequestBody RouletteBet bet) {
+        Long userID = id;
+        RouletteGame rouletteGame;
+        rouletteGame = rouletteService.fetchGameById(bet.getGameId());
+        if (BetValidator.AreBetsValid(bet, rouletteGame)) {
+            boolean result = bettingService.RegisterBets(userID, bet);
+            if (result) {
+                return ResponseEntity.ok("Roulette Bet on Successfully!!");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }

@@ -9,6 +9,7 @@ public interface RouletteDao {
 
     boolean updateRoulette(RouletteGame rouletteGame);
 
-    List<RouletteGame> fetchAllUser();
+    List<RouletteGame> fetchAllGame();
 
+    RouletteGame fetchGameById(Long id);
 }

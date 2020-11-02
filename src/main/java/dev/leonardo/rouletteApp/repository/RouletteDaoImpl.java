@@ -37,10 +37,17 @@ public class RouletteDaoImpl implements RouletteDao {
         }
     }
     @Override
-    public List<RouletteGame> fetchAllUser() {
+    public List<RouletteGame> fetchAllGame() {
         List<RouletteGame> rouletteGames;
         rouletteGames = redisTemplate.opsForHash().values(KEY);
         return rouletteGames;
+    }
+
+    @Override
+    public RouletteGame fetchGameById(Long id) {
+        RouletteGame rouletteGame;
+        rouletteGame = (RouletteGame) redisTemplate.opsForHash().get(KEY,id.toString());
+        return rouletteGame;
     }
 
 

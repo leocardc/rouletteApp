@@ -7,6 +7,6 @@ import java.util.List;
 public interface RouletteService {
     Long saveRoulette(RouletteGame rouletteGame);
     boolean updateRoulette(RouletteGame rouletteGame);
-    List<RouletteGame> fetchAllUser();
-
+    List<RouletteGame> fetchAllGame();
+    RouletteGame fetchGameById(Long id);
 }
