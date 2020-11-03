@@ -71,4 +71,50 @@ public class RouletteBet implements Serializable {
     public void setWinnings(double winnings) {
         this.winnings = winnings;
     }
+
+    public void GetWinnings(RouletteBet bet,int result) {
+        if ( IsWinningBet(bet, result)) {
+
+            if (bet.betType != null) {
+                setWinnings(GetSpecialBetWinnings(bet));
+            }
+            else {
+                setWinnings(bet.betAmount * 5);
+            }
+        }else{setWinnings(0);}
+
+    }
+
+    private double GetSpecialBetWinnings(RouletteBet bet) {
+        switch (bet.betType) {
+            case RED:
+            case BLACK:
+                return bet.betAmount * 1.8;
+        }
+        return 0;
+    }
+    public static boolean IsWinningBet(RouletteBet bet, int result) {
+        if (bet.getBetType() == null) {
+            if (bet.getNumberBet() == result) {
+                return true;
+            }
+            return false;
+        }
+
+        switch (bet.betType) {
+            case RED:
+                if (BetValidator.redNumbers.contains(result)) {
+                    return true;
+                }
+                break;
+            case BLACK:
+                if (BetValidator.blackNumbers.contains(result)) {
+                    return true;
+                }
+                break;
+
+        }
+
+        return false;
+    }
 }
