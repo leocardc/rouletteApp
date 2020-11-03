@@ -5,6 +5,8 @@ import dev.leonardo.rouletteApp.repository.RouletteBetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RouletteBetServiceImpl implements RouletteBettingService{
     @Autowired
@@ -14,4 +16,7 @@ public class RouletteBetServiceImpl implements RouletteBettingService{
     public boolean placeBets(Long userId, RouletteBet bet) {
         return rouletteBetDao.placeBets(userId,bet);
     }
+
+    @Override
+    public List<RouletteBet> getBetById(Long id, int result) { return rouletteBetDao.getBetById(id, result); }
 }

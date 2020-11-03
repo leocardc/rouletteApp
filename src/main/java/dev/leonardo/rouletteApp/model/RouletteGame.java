@@ -8,6 +8,15 @@ import java.io.Serializable;
 public class RouletteGame implements Serializable {
     private Long idRoulette;
     private String status;
+    private int numberWinner;
+
+    public int getNumberWinner() {
+        return numberWinner;
+    }
+
+    public void setNumberWinner(int numberWinner) {
+        this.numberWinner = numberWinner;
+    }
 
     public String getStatus() {
         return status;

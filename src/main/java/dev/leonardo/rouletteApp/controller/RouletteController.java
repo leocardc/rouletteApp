@@ -20,7 +20,8 @@ public class RouletteController {
     @Autowired
     private RouletteBettingService  bettingService;
 
-    private static final String STATUS = "Open";
+    private static final String STATUSOPEN = "OPEN";
+    private static final String STATUSCLOSE = "CLOSED";
 
     @PostMapping("/createRoulette")
     public ResponseEntity<String> createRoulette(@RequestBody RouletteGame rouletteGame){
@@ -33,7 +34,8 @@ public class RouletteController {
     @PutMapping("/openRoulette/{id}")
     public ResponseEntity<String> openRoulette(@PathVariable("id") Long id){
         RouletteGame rouletteGame= rouletteService.getRouletteById(id);
-        rouletteGame.setStatus(STATUS);
+        rouletteGame.setStatus(STATUSOPEN);
+        rouletteGame.setNumberWinner(0);
         boolean result = rouletteService.openRoulette(rouletteGame);
         if (result )
             return ResponseEntity.ok("Roulette Game Open Successfully!!");
@@ -66,6 +68,20 @@ public class RouletteController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    @PutMapping("/closeBet/{id}")
+    public ResponseEntity<List<RouletteBet>> closeBet(@PathVariable("id") Long id){
+        int numberWinner = (int)Math.floor(Math.random()*1 +1);
+        RouletteGame rouletteGame= rouletteService.getRouletteById(id);
+        rouletteGame.setStatus(STATUSCLOSE);
+        rouletteGame.setNumberWinner(numberWinner);
+        List<RouletteBet> bets;
+        boolean result = rouletteService.openRoulette(rouletteGame);
+        if (result) {
+            bets = bettingService.getBetById(id,numberWinner);
+            return ResponseEntity.ok(bets);
+        }else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
     @DeleteMapping("/roulette/{id}")
     public ResponseEntity<String> deleteRoulette(@PathVariable("id") Long id){
@@ -75,4 +91,5 @@ public class RouletteController {
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 }
