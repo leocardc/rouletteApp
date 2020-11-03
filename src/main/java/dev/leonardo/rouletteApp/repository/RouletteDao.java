@@ -5,11 +5,13 @@ import dev.leonardo.rouletteApp.model.RouletteGame;
 import java.util.List;
 
 public interface RouletteDao {
-    Long saveRoulette(RouletteGame rouletteGame);
+    Long createRoulette(RouletteGame rouletteGame);
 
-    boolean updateRoulette(RouletteGame rouletteGame);
+    boolean openRoulette(RouletteGame rouletteGame);
 
-    List<RouletteGame> fetchAllGame();
+    List<RouletteGame> getAllRoulette();
 
-    RouletteGame fetchGameById(Long id);
+    RouletteGame getRouletteById(Long id);
+
+    boolean deleteRoulette(Long id);
 }

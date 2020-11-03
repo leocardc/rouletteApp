@@ -5,5 +5,5 @@ import dev.leonardo.rouletteApp.model.RouletteBet;
 import java.util.List;
 
 public interface RouletteBetDao {
-    boolean RegisterBets(Long userId, RouletteBet bet);
+    boolean placeBets(Long userId, RouletteBet bet);
 }

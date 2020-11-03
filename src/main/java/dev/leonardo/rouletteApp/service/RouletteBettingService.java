@@ -4,5 +4,5 @@ import dev.leonardo.rouletteApp.model.RouletteBet;
 
 
 public interface RouletteBettingService {
-    boolean RegisterBets(Long userId, RouletteBet bet);
+    boolean placeBets(Long userId, RouletteBet bet);
 }

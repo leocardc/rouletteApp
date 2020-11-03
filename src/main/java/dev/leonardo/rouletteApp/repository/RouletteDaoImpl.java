@@ -16,8 +16,9 @@ public class RouletteDaoImpl implements RouletteDao {
     private static final String KEY = "ROULETTE";
 
     @Override
-    public Long saveRoulette(RouletteGame rouletteGame) {
+    public Long createRoulette(RouletteGame rouletteGame) {
         try {
+            rouletteGame.setStatus(rouletteGame.getStatus().toUpperCase());
             redisTemplate.opsForHash().put(KEY, rouletteGame.getIdRoulette().toString(),rouletteGame);
             return rouletteGame.getIdRoulette();
         }catch (Exception e){
@@ -27,7 +28,7 @@ public class RouletteDaoImpl implements RouletteDao {
     }
 
     @Override
-    public boolean updateRoulette(RouletteGame rouletteGame) {
+    public boolean openRoulette(RouletteGame rouletteGame) {
         try {
             redisTemplate.opsForHash().put(KEY, rouletteGame.getIdRoulette().toString(),rouletteGame);
             return true;
@@ -37,17 +38,28 @@ public class RouletteDaoImpl implements RouletteDao {
         }
     }
     @Override
-    public List<RouletteGame> fetchAllGame() {
+    public List<RouletteGame> getAllRoulette() {
         List<RouletteGame> rouletteGames;
         rouletteGames = redisTemplate.opsForHash().values(KEY);
         return rouletteGames;
     }
 
     @Override
-    public RouletteGame fetchGameById(Long id) {
+    public RouletteGame getRouletteById(Long id) {
         RouletteGame rouletteGame;
         rouletteGame = (RouletteGame) redisTemplate.opsForHash().get(KEY,id.toString());
         return rouletteGame;
+    }
+
+    @Override
+    public boolean deleteRoulette(Long id) {
+        try {
+            redisTemplate.opsForHash().delete(KEY,id.toString());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

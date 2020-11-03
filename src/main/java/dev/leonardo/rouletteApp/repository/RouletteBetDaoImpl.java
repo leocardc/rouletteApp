@@ -18,7 +18,7 @@ public class RouletteBetDaoImpl implements RouletteBetDao {
     private static final String KEY = "BET";
 
     @Override
-    public boolean RegisterBets(Long userId, RouletteBet bet) {
+    public boolean placeBets(Long userId, RouletteBet bet) {
         try {
             bet.setBetId(userId);
             redisTemplate.opsForHash().put(KEY,bet.getGameId().toString(),bet);

@@ -20,46 +20,59 @@ public class RouletteController {
     @Autowired
     private RouletteBettingService  bettingService;
 
+    private static final String STATUS = "Open";
+
     @PostMapping("/createRoulette")
-    public ResponseEntity<String> saveRoulette(@RequestBody RouletteGame rouletteGame){
-        Long result = rouletteService.saveRoulette(rouletteGame);
+    public ResponseEntity<String> createRoulette(@RequestBody RouletteGame rouletteGame){
+        Long result = rouletteService.createRoulette(rouletteGame);
         if (result != null)
             return ResponseEntity.ok("Roulette Game Create Successfully!! id: "+result );
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     @PutMapping("/openRoulette/{id}")
-    public ResponseEntity<String> updateRoulette(@PathVariable("id") Long id, @RequestBody RouletteGame rouletteGame){
-        boolean result = rouletteService.updateRoulette(rouletteGame);
+    public ResponseEntity<String> openRoulette(@PathVariable("id") Long id){
+        RouletteGame rouletteGame= rouletteService.getRouletteById(id);
+        rouletteGame.setStatus(STATUS);
+        boolean result = rouletteService.openRoulette(rouletteGame);
         if (result )
             return ResponseEntity.ok("Roulette Game Open Successfully!!");
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     @GetMapping("/roulettes")
-    public ResponseEntity<List<RouletteGame>> fetchAllUser(){
+    public ResponseEntity<List<RouletteGame>> getAllRoulette(){
         List<RouletteGame> rouletteGames;
-        rouletteGames = rouletteService.fetchAllGame();
+        rouletteGames = rouletteService.getAllRoulette();
         return ResponseEntity.ok(rouletteGames);
     }
     @GetMapping("/roulette/{id}")
-    public ResponseEntity<RouletteGame> fetchGameById(@PathVariable("id") Long id){
+    public ResponseEntity<RouletteGame> getRouletteById(@PathVariable("id") Long id){
         RouletteGame rouletteGame;
-        rouletteGame = rouletteService.fetchGameById(id);
+        rouletteGame = rouletteService.getRouletteById(id);
         return ResponseEntity.ok(rouletteGame);
     }
 
     @PostMapping("/bet/{id}")
-    public ResponseEntity<String> PlaceBets(@PathVariable("id") Long id,@RequestBody RouletteBet bet) {
+    public ResponseEntity<String> placeBets(@PathVariable("id") Long id, @RequestBody RouletteBet bet) {
         Long userID = id;
         RouletteGame rouletteGame;
-        rouletteGame = rouletteService.fetchGameById(bet.getGameId());
+        rouletteGame = rouletteService.getRouletteById(bet.getGameId());
         if (BetValidator.AreBetsValid(bet, rouletteGame)) {
-            boolean result = bettingService.RegisterBets(userID, bet);
+            boolean result = bettingService.placeBets(userID, bet);
             if (result) {
                 return ResponseEntity.ok("Roulette Bet on Successfully!!");
             }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @DeleteMapping("/roulette/{id}")
+    public ResponseEntity<String> deleteRoulette(@PathVariable("id") Long id){
+        boolean result = rouletteService.deleteRoulette(id);
+        if (result)
+            return ResponseEntity.ok("Roulette deleted Successfully!!");
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

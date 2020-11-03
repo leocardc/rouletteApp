@@ -5,8 +5,9 @@ import dev.leonardo.rouletteApp.model.RouletteGame;
 import java.util.List;
 
 public interface RouletteService {
-    Long saveRoulette(RouletteGame rouletteGame);
-    boolean updateRoulette(RouletteGame rouletteGame);
-    List<RouletteGame> fetchAllGame();
-    RouletteGame fetchGameById(Long id);
+    Long createRoulette(RouletteGame rouletteGame);
+    boolean openRoulette(RouletteGame rouletteGame);
+    List<RouletteGame> getAllRoulette();
+    RouletteGame getRouletteById(Long id);
+    boolean deleteRoulette(Long id);
 }

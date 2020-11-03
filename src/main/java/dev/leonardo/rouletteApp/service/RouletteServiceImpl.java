@@ -14,22 +14,27 @@ public class RouletteServiceImpl implements RouletteService {
     private RouletteDao rouletteDao;
 
     @Override
-    public Long saveRoulette(RouletteGame rouletteGame) { return rouletteDao.saveRoulette(rouletteGame);
+    public Long createRoulette(RouletteGame rouletteGame) { return rouletteDao.createRoulette(rouletteGame);
     }
 
     @Override
-    public boolean updateRoulette(RouletteGame rouletteGame) {
-        return rouletteDao.updateRoulette(rouletteGame);
+    public boolean openRoulette(RouletteGame rouletteGame) {
+        return rouletteDao.openRoulette(rouletteGame);
     }
 
     @Override
-    public List<RouletteGame> fetchAllGame() {
-        return rouletteDao.fetchAllGame();
+    public List<RouletteGame> getAllRoulette() {
+        return rouletteDao.getAllRoulette();
     }
 
     @Override
-    public RouletteGame fetchGameById(Long id) {
-        return rouletteDao.fetchGameById(id);
+    public RouletteGame getRouletteById(Long id) {
+        return rouletteDao.getRouletteById(id);
+    }
+
+    @Override
+    public boolean deleteRoulette(Long id) {
+        return rouletteDao.deleteRoulette(id);
     }
 
 
