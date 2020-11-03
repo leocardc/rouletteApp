@@ -5,7 +5,6 @@ import dev.leonardo.rouletteApp.model.RouletteBet;
 import dev.leonardo.rouletteApp.model.RouletteGame;
 import dev.leonardo.rouletteApp.service.RouletteBettingService;
 import dev.leonardo.rouletteApp.service.RouletteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +14,16 @@ import java.util.List;
 @RestController
 public class RouletteController {
 
-    @Autowired
-    private RouletteService rouletteService;
-    @Autowired
-    private RouletteBettingService  bettingService;
+    private final RouletteService rouletteService;
+    private final RouletteBettingService  bettingService;
 
     private static final String STATUSOPEN = "OPEN";
     private static final String STATUSCLOSE = "CLOSED";
+
+    public RouletteController(RouletteBettingService bettingService, RouletteService rouletteService) {
+        this.bettingService = bettingService;
+        this.rouletteService = rouletteService;
+    }
 
     @PostMapping("/createRoulette")
     public ResponseEntity<String> createRoulette(@RequestBody RouletteGame rouletteGame){
@@ -57,11 +59,10 @@ public class RouletteController {
 
     @PostMapping("/bet/{id}")
     public ResponseEntity<String> placeBets(@PathVariable("id") Long id, @RequestBody RouletteBet bet) {
-        Long userID = id;
         RouletteGame rouletteGame;
         rouletteGame = rouletteService.getRouletteById(bet.getGameId());
         if (BetValidator.AreBetsValid(bet, rouletteGame)) {
-            boolean result = bettingService.placeBets(userID, bet);
+            boolean result = bettingService.placeBets(id, bet);
             if (result) {
                 return ResponseEntity.ok("Roulette Bet on Successfully!!");
             }

@@ -1,16 +1,12 @@
 package dev.leonardo.rouletteApp.repository;
 
-import dev.leonardo.rouletteApp.model.BetValidator;
 import dev.leonardo.rouletteApp.model.RouletteBet;
-import dev.leonardo.rouletteApp.model.RouletteGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Repository
 public class RouletteBetDaoImpl implements RouletteBetDao {
